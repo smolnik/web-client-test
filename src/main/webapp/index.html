@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Web client</title>
+<link rel="stylesheet" type="text/css" href="simple.css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+    var ws;
+
+    function logStatus(text) {
+	document.getElementById("status").innerHTML = "<b>" + text + "</b>"
+	var shElement = document.getElementById("statusHistory");
+	var oldValue = shElement.value;
+	shElement.value = oldValue == null || oldValue == "" ? text : (text + "\n" + oldValue);
+    }
+
+    function clear() {
+	document.getElementById("statusHistory").value = "";
+    }
+
+    function launch() {
+	if ("WebSocket" in window) {
+	    launched = true;
+	    clear();
+	    logStatus("Great news! WebSocket is supported by your browser.");
+
+	    var command = "launch";
+	    var clientHost = document.getElementById("clientHost").value;
+	    var host = document.getElementById("host").value;
+	    var objectKey = document.getElementById("objectKey").value;
+	    var requestsNumber = document.getElementById("requestsNumber").value;
+	    var suspensionInMs = document.getElementById("suspensionInMs").value;
+	    var workersNumber = document.getElementById("workersNumber").value;
+	    ws = new WebSocket("ws://" + clientHost + "/webclient/ws");
+	    var message = command + ";" + host + ";" + objectKey + ";" + requestsNumber + ";" + suspensionInMs + ";" + workersNumber;
+	    ws.onerror = function(evt) {
+		var err = "Error" + evt.data;
+		logStatus(err);
+		alert(err);
+	    }
+	    ws.onopen = function() {
+		logStatus("Connection has been opened to " + host);
+		ws.send(message);
+		logStatus("Message has been sent");
+		ws.onmessage = function(evt) {
+		    var msg = evt.data;
+		    logStatus("Message has been received [" + msg + "]");
+		};
+		ws.onclose = function(evt) {
+		    logStatus("Connection has been closed with code " + evt.code + ", reason " + evt.reason);
+		}
+	    };
+	} else {
+	    alert("WebSocket NOT supported by your browser!");
+	}
+    }
+
+    function stop() {
+	if (ws != null && ws.readyState == 1) {
+	    ws.send("stop;");
+	}
+    }
+</script>
+</head>
+<body>
+	<div style="font-size: 15px; width: 800px; text-align: center;">
+	I am a very Demanding Customer - giving the <b>digest-no-limit-service</b> a hard time and overwhelming work to do... 
+	</div>
+	<div class="border" style="width: 800px">
+		<div style="margin: 20px">
+			<div id="formArea">
+				<form>
+					<div class="formLabel">Client host (dispatcher-app):</div>
+					<div class="formField">
+						<input type="text" size="50" id="clientHost" name="clienHost" value="ws.adamsmolnik.net" class="formInput" readonly="readonly"/>
+					</div>
+					<div class="formLabel">
+						Destination host (of <b>digest-no-limit-service</b>):
+					</div>
+					<div class="formField">
+						<input type="text" size="50" id="host" name="host" value="digest.adamsmolnik.net" class="formInput" style="background-color: #FCAEAE;"/>
+					</div>
+					<div class="formLabel">Object key:</div>
+					<div class="formField">
+						<input type="text" size="50" id="objectKey" name="objectKey" value="largefiles/file_sizedOf10000000" class="formInput" />
+					</div>
+					<div class="formLabel">Requests number:</div>
+					<div class="formField">
+						<input type="text" size="10" id="requestsNumber" name="requestsNumber" value="2000" class="formInput" />
+					</div>
+					<div class="formLabel">Workers number:</div>
+					<div class="formField">
+						<input type="text" size="10" id="workersNumber" name="workersNumber" value="10" class="formInput" />
+					</div>
+					<div class="formLabel">Suspension (ms):</div>
+					<div class="formField">
+						<input type="text" size="10" id="suspensionInMs" name="suspensionInMs" value="300" class="formInput" />
+					</div>
+					<div class="formLabel">Algorithm:</div>
+					<div class="formField">
+						<input type="text" size="10" id="algorithm" name="algorithm" value="SHA-256" class="formInput" />
+					</div>
+					<div id="wsLauncher" style="width: 315px; text-align: right; margin-left: 90px;">
+						<a href="javascript:launch()">Run processing</a> &nbsp; <a href="javascript:stop()">Stop</a>
+					</div>
+				</form>
+			</div>
+			<div id="info" style="width: 100%">
+				Current status:
+				<div id="status" style="height: 20px; margin-top: 5px">Idle</div>
+				<br> Status history:<br>
+				<textarea rows="4" id="statusHistory" name="statusHistory" readonly="readonly" style="width: 100%">
+		</textarea>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
