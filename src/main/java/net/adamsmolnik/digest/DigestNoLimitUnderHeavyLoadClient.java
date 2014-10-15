@@ -1,4 +1,4 @@
-package net.adamsmolnik.ws;
+package net.adamsmolnik.digest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,55 +126,52 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
     }
 
     public final void send(Optional<Consumer<ProgressEvent>> progressEventConsumer) {
-        launchers
-                .submit(() -> {
-                    final Entity<DigestRequest> request = Entity.json(new DigestRequest(algorithm, objectKey));
-                    final AtomicInteger submitted = new AtomicInteger();
-                    final AtomicInteger succeeded = new AtomicInteger();
-                    final AtomicInteger failed = new AtomicInteger();
+        launchers.submit(() -> {
+            final Entity<DigestRequest> request = Entity.json(new DigestRequest(algorithm, objectKey));
+            final AtomicInteger submitted = new AtomicInteger();
+            final AtomicInteger succeeded = new AtomicInteger();
+            final AtomicInteger failed = new AtomicInteger();
 
-                    List<Future<?>> futures = new ArrayList<>();
-                    for (int i = 0; i < requestsNumber; i++) {
-                        if (workers.isShutdown() || stop.get()) {
-                            break;
-                        }
-                        futures.add(workers.submit(() -> {
-                            if (stop.get()) {
-                                return;
-                            }
+            List<Future<?>> futures = new ArrayList<>();
+            for (int i = 0; i < requestsNumber; i++) {
+                if (workers.isShutdown() || stop.get()) {
+                    break;
+                }
+                futures.add(workers.submit(() -> {
+                    if (stop.get()) {
+                        return;
+                    }
+                    int seq = submitted.incrementAndGet();
+                    try {
+                        System.out.println("before sending (seq " + seq + ")");
+                        Response response = client.target("http://" + host + "/digest-service-no-limit/ds/digest").request().post(request);
+                        System.out.println("after sending (seq " + seq + ")");
+                        response.readEntity(DigestResponse.class);
+                        succeeded.incrementAndGet();
+                        TimeUnit.MILLISECONDS.sleep(suspensionInMs);
+                    } catch (InterruptedException iex) {
+                        // deliberately ignored
+                        Thread.interrupted();
+                    } catch (Exception iex) {
+                        failed.incrementAndGet();
+                        iex.printStackTrace();
+                    } finally {
+                        progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(seq, succeeded.get(), failed.get())));
+                    }
+                }));
 
-                            try {
-                                submitted.incrementAndGet();
-                                System.out.println("before sending (submitted " + submitted.get() + ")");
-                                Response response = client.target("http://" + host + "/digest-service-no-limit/ds/digest").request().post(request);
-                                System.out.println("after sending (submitted " + submitted.get() + ")");
-                                response.readEntity(DigestResponse.class);
-                                succeeded.incrementAndGet();
-                                TimeUnit.MILLISECONDS.sleep(suspensionInMs);
-                            } catch (InterruptedException iex) {
-                                // deliberately ignored
-                            } catch (Exception iex) {
-                                failed.incrementAndGet();
-                                iex.printStackTrace();
-                            } finally {
-                                progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(submitted.get(), succeeded.get(),
-                                        failed.get())));
-                            }
-                        }));
+            };
+            futures.forEach(f -> {
+                try {
+                    f.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                    };
-                    futures.forEach(f -> {
-                        try {
-                            f.get();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            });
+            progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(true, submitted.get(), succeeded.get(), failed.get())));
 
-                    });
-                    progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(true, submitted.get(), succeeded.get(), failed
-                            .get())));
-
-                });
+        });
     }
 
     public final void send() {
@@ -184,8 +181,8 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
     @Override
     public final void close() {
         stop.set(true);
-        workers.shutdownNow();
-        launchers.shutdownNow();
+        workers.shutdown();
+        launchers.shutdown();
     }
 
     @Override

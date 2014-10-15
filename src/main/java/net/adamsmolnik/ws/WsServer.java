@@ -12,6 +12,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import net.adamsmolnik.digest.DigestNoLimitUnderHeavyLoadClient;
 
 /**
  * @author ASmolnik
@@ -94,18 +95,23 @@ public class WsServer {
                     session.getBasicRemote().sendText(
                             "Submitted " + progressEvent.submitted + ", succeeded " + progressEvent.succeeded + ", failed " + progressEvent.failed
                                     + ", sent from " + localHost);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    try {
+                        session.getBasicRemote().sendText(ex.getLocalizedMessage());
+                    } catch (IOException ioex) {
+                        ioex.printStackTrace();
+                    }
                 }
             }));
-        } catch (Exception e) {
+        } catch (Exception ex) {
             try {
-                e.printStackTrace();
+                ex.printStackTrace();
                 closeQuietly(client);
                 clientMap.remove(sessionId);
-                session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, e.getLocalizedMessage()));
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                session.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, ex.getLocalizedMessage()));
+            } catch (IOException ioex) {
+                ioex.printStackTrace();
             }
         }
     }
