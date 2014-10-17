@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Web client</title>
+<title>Web Digest Service Client (WDSC)</title>
 <link rel="stylesheet" type="text/css" href="simple.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript">
@@ -11,7 +11,7 @@
 	document.getElementById("status").innerHTML = "<b>" + text + "</b>"
 	var shElement = document.getElementById("statusHistory");
 	var oldValue = shElement.value;
-	shElement.value = oldValue == null || oldValue == "" ? text : (text + "\n" + oldValue);
+	shElement.value = oldValue == null || oldValue == "" ? text : (oldValue + "\n" + text);
     }
 
     function clear() {
@@ -64,7 +64,7 @@
 </head>
 <body>
 	<div style="font-size: 15px; width: 800px; text-align: center;">
-	I am a very Demanding Customer - giving the <b>digest-no-limit-service</b> a hard time and overwhelming work to do... 
+		I am a very Demanding Customer - giving the <b>digest-no-limit-service</b> a hard time and overwhelming work to do...
 	</div>
 	<div class="border" style="width: 800px">
 		<div style="margin: 20px">
@@ -72,13 +72,13 @@
 				<form>
 					<div class="formLabel">Client host (dispatcher-app):</div>
 					<div class="formField">
-						<input type="text" size="50" id="clientHost" name="clienHost" value="ws.adamsmolnik.net" class="formInput" readonly="readonly"/>
+						<input type="text" size="50" id="clientHost" name="clienHost" value="ws.adamsmolnik.net" class="formInput" readonly="readonly" />
 					</div>
 					<div class="formLabel">
 						Destination host (of <b>digest-no-limit-service</b>):
 					</div>
 					<div class="formField">
-						<input type="text" size="50" id="host" name="host" value="digest.adamsmolnik.net" class="formInput" style="background-color: #FCAEAE;"/>
+						<input type="text" size="50" id="host" name="host" value="digest.adamsmolnik.net" class="formInput" style="background-color: #FCAEAE;" />
 					</div>
 					<div class="formLabel">Object key:</div>
 					<div class="formField">
@@ -86,15 +86,15 @@
 					</div>
 					<div class="formLabel">Requests number:</div>
 					<div class="formField">
-						<input type="text" size="10" id="requestsNumber" name="requestsNumber" value="2000" class="formInput" />
+						<input type="text" size="10" id="requestsNumber" name="requestsNumber" value="1" class="formInput" />
 					</div>
 					<div class="formLabel">Workers number:</div>
 					<div class="formField">
-						<input type="text" size="10" id="workersNumber" name="workersNumber" value="10" class="formInput" />
+						<input type="text" size="10" id="workersNumber" name="workersNumber" value="1" class="formInput" />
 					</div>
 					<div class="formLabel">Suspension (ms):</div>
 					<div class="formField">
-						<input type="text" size="10" id="suspensionInMs" name="suspensionInMs" value="300" class="formInput" />
+						<input type="text" size="10" id="suspensionInMs" name="suspensionInMs" value="0" class="formInput" />
 					</div>
 					<div class="formLabel">Algorithm:</div>
 					<div class="formField">

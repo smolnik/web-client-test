@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -28,10 +29,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
 import net.adamsmolnik.digest.DigestNoLimitUnderHeavyLoadClient;
 
+/**
+ * @author ASmolnik
+ *
+ */
 public class Desktop extends JPanel {
 
     private static final long serialVersionUID = -499384771052856134L;
@@ -47,7 +50,7 @@ public class Desktop extends JPanel {
     }
 
     private static void createAndShowGUI() throws Exception {
-        final JFrame frame = new JFrame("Digest service client");
+        final JFrame frame = new JFrame("Digest Service Client (DSC)");
         Desktop desktop = new Desktop(frame);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(desktop, BorderLayout.CENTER);
@@ -135,13 +138,13 @@ public class Desktop extends JPanel {
         c.gridy = 2;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.WEST;
-        JTextField rnTextField = new JTextField("2000", 5);
+        JTextField rnTextField = new JTextField("1", 5);
         form.add(rnTextField, c);
         c.gridy = 3;
-        JTextField wnTextField = new JTextField("10", 5);
+        JTextField wnTextField = new JTextField("1", 5);
         form.add(wnTextField, c);
         c.gridy = 4;
-        JTextField susTextField = new JTextField("300", 5);
+        JTextField susTextField = new JTextField("0", 5);
         form.add(susTextField, c);
         c.gridy = 5;
         JTextField algTextField = new JTextField("SHA-256", 5);
@@ -190,11 +193,7 @@ public class Desktop extends JPanel {
             @Override
             public void insertUpdate(DocumentEvent event) {
                 try {
-                    Document histDoc = historyTextArea.getDocument();
-                    String text = histDoc.getText(0, histDoc.getLength());
-                    String newText = event.getDocument().getText(0, event.getDocument().getLength());
-                    newText = text == null ? newText : newText + "\n";
-                    histDoc.insertString(0, newText, SimpleAttributeSet.EMPTY);
+                    historyTextArea.append(event.getDocument().getText(0, event.getDocument().getLength()) + "\n");
                 } catch (BadLocationException e1) {
                     e1.printStackTrace();
                 }
@@ -207,25 +206,27 @@ public class Desktop extends JPanel {
         });;
 
         runButton.addActionListener(event -> {
-            String host = hostTextField.getText();
-            String objectKey = objectKeyTextField.getText();
-            String alg = algTextField.getText();
-            int requestsNumber = Integer.valueOf(rnTextField.getText());
-            int suspensionInMs = Integer.valueOf(susTextField.getText());
-            int workersNumber = Integer.valueOf(wnTextField.getText());
-
-            DigestNoLimitUnderHeavyLoadClient.Builder builder = new DigestNoLimitUnderHeavyLoadClient.Builder(host, objectKey)
-                    .requestsNumber(requestsNumber).suspensionInMs(suspensionInMs).workersNumber(workersNumber).algorithm(alg);
-
-            final DigestNoLimitUnderHeavyLoadClient client = builder.build();
+            DigestNoLimitUnderHeavyLoadClient client = null;
             try {
+                String host = hostTextField.getText();
+                String objectKey = objectKeyTextField.getText();
+                String alg = algTextField.getText();
+                int requestsNumber = Integer.valueOf(rnTextField.getText());
+                int suspensionInMs = Integer.valueOf(susTextField.getText());
+                int workersNumber = Integer.valueOf(wnTextField.getText());
+
+                DigestNoLimitUnderHeavyLoadClient.Builder builder = new DigestNoLimitUnderHeavyLoadClient.Builder(host, objectKey)
+                        .requestsNumber(requestsNumber).suspensionInMs(suspensionInMs).workersNumber(workersNumber).algorithm(alg);
+
+                client = builder.build();
                 parent.addWindowListener(new MyWindowAdapter(client));
+                final DigestNoLimitUnderHeavyLoadClient client1 = client;
                 stopButton.addActionListener(new ActionListener() {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         currentTextField.setText("Service Digest requests processing is about to stop...");
-                        closeQuietly(client);
+                        closeQuietly(client1);
                         stopButton.removeActionListener(this);
                     }
                 });
@@ -238,10 +239,15 @@ public class Desktop extends JPanel {
                             return;
                         }
                         String info = "Submitted " + progressEvent.submitted + ", succeeded " + progressEvent.succeeded + ", failed "
-                                + progressEvent.failed;
-                        currentTextField.setText(info);
+                                + progressEvent.failed + ", result " + progressEvent.result;
+                        SwingUtilities.invokeLater(() -> {
+                            currentTextField.setText(info.length() > 120 ? info.substring(0, 120) + "..." : info);
+                            currentTextField.setToolTipText(info);
+                        });
                     } catch (Exception ex) {
-                        currentTextField.setText(ex.getLocalizedMessage());
+                        SwingUtilities.invokeLater(() -> {
+                            currentTextField.setText(ex.getLocalizedMessage());
+                        });
                         ex.printStackTrace();
                     }
                 }));
@@ -249,6 +255,7 @@ public class Desktop extends JPanel {
                 currentTextField.setText(ex.getLocalizedMessage());
                 ex.printStackTrace();
                 closeQuietly(client);
+                JOptionPane.showMessageDialog(parent, ex.getClass().getName() + " occurred: " + ex.getLocalizedMessage());
             }
 
         });

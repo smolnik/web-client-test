@@ -94,7 +94,7 @@ public class WsServer {
                     }
                     session.getBasicRemote().sendText(
                             "Submitted " + progressEvent.submitted + ", succeeded " + progressEvent.succeeded + ", failed " + progressEvent.failed
-                                    + ", sent from " + localHost);
+                                    + ", result " + progressEvent.result + ", sent from " + localHost);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     try {

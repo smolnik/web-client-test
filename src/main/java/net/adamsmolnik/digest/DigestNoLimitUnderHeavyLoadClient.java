@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -33,10 +34,13 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
 
         public final boolean completed;
 
-        public ProgressEvent(int submitted, int succeeded, int failed) {
+        public final String result;
+
+        public ProgressEvent(int submitted, int succeeded, int failed, String result) {
             this.submitted = submitted;
             this.succeeded = succeeded;
             this.failed = failed;
+            this.result = result;
             this.completed = false;
         }
 
@@ -44,6 +48,7 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
             this.submitted = submitted;
             this.succeeded = succeeded;
             this.failed = failed;
+            this.result = "Finished";
             this.completed = completed;
         }
 
@@ -142,21 +147,24 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
                         return;
                     }
                     int seq = submitted.incrementAndGet();
+                    final AtomicReference<String> responseMessage = new AtomicReference<>();
                     try {
                         System.out.println("before sending (seq " + seq + ")");
                         Response response = client.target("http://" + host + "/digest-service-no-limit/ds/digest").request().post(request);
                         System.out.println("after sending (seq " + seq + ")");
-                        response.readEntity(DigestResponse.class);
+                        responseMessage.set(response.readEntity(DigestResponse.class).toString());
                         succeeded.incrementAndGet();
                         TimeUnit.MILLISECONDS.sleep(suspensionInMs);
                     } catch (InterruptedException iex) {
                         // deliberately ignored
                         Thread.interrupted();
                     } catch (Exception iex) {
+                        responseMessage.set(iex.getLocalizedMessage());
                         failed.incrementAndGet();
                         iex.printStackTrace();
                     } finally {
-                        progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(seq, succeeded.get(), failed.get())));
+                        progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(seq, succeeded.get(), failed.get(),
+                                responseMessage.get())));
                     }
                 }));
 
