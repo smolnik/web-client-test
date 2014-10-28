@@ -74,7 +74,7 @@ public class WsServer {
     }
 
     private void launch(Session session, String[] data) {
-        final String destHost = data[1];
+        final String destHost = data[1].trim();
         final String objectKey = data[2];
         final int requestsNumber = Integer.valueOf(data[3]);
         final int suspensionInMs = Integer.valueOf(data[4]);

@@ -120,7 +120,7 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
     private final AtomicBoolean stop = new AtomicBoolean();
 
     private DigestNoLimitUnderHeavyLoadClient(Builder builder) {
-        host = builder.host;
+        host = builder.host.trim();
         algorithm = builder.algorithm;
         objectKey = builder.objectKey;
         requestsNumber = builder.requestsNumber;

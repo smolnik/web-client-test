@@ -129,7 +129,7 @@ public class Desktop extends JPanel {
         c.weightx = 1;
         c.insets.right = 15;
         c.fill = GridBagConstraints.HORIZONTAL;
-        JTextField hostTextField = new JTextField("digest.adamsmolnik.net");
+        JTextField hostTextField = new JTextField("digest.adamsmolnik.com");
         hostTextField.setBackground(Color.decode("#FCAEAE"));
         form.add(hostTextField, c);
         c.gridy = 1;
@@ -208,7 +208,7 @@ public class Desktop extends JPanel {
         runButton.addActionListener(event -> {
             DigestNoLimitUnderHeavyLoadClient client = null;
             try {
-                String host = hostTextField.getText();
+                String host = hostTextField.getText().trim();
                 String objectKey = objectKeyTextField.getText();
                 String alg = algTextField.getText();
                 int requestsNumber = Integer.valueOf(rnTextField.getText());

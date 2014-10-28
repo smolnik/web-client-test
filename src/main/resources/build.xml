@@ -3,49 +3,49 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="C:/workspace/web-client-test/build/client.jar">
+        <jar destfile="C:/workspace/web-client-test/build/dcs/dsc.jar">
             <manifest>
                 <attribute name="Main-Class" value="net.adamsmolnik.gui.Desktop"/>
-                <attribute name="Class-Path" value=". client_lib/aopalliance-repackaged-2.3.0-b10.jar client_lib/common-ext-model.jar client_lib/hk2-api-2.3.0-b10.jar client_lib/hk2-locator-2.3.0-b10.jar client_lib/hk2-utils-2.3.0-b10.jar client_lib/javassist-3.18.1-GA.jar client_lib/javax.annotation-api-1.2.jar client_lib/javax.inject-2.3.0-b10.jar client_lib/javax.json-1.0.jar client_lib/javax.ws.rs-api-2.0.1.jar client_lib/jersey-client-2.12.jar client_lib/jersey-common-2.12.jar client_lib/jersey-entity-filtering-2.12.jar client_lib/jersey-guava-2.12.jar client_lib/jersey-media-json-processing-2.12.jar client_lib/jersey-media-moxy-2.12.jar client_lib/jsonp-jaxrs-1.0.jar client_lib/org.eclipse.persistence.antlr-2.5.0.jar client_lib/org.eclipse.persistence.asm-2.5.0.jar client_lib/org.eclipse.persistence.core-2.5.0.jar client_lib/org.eclipse.persistence.moxy-2.5.0.jar client_lib/osgi-resource-locator-1.0.1.jar client_lib/common-ext-model-0.0.1-SNAPSHOT.jar client_lib/aws-java-sdk-1.8.9.1.jar client_lib/commons-logging-1.1.1.jar client_lib/httpclient-4.2.jar client_lib/httpcore-4.2.jar client_lib/commons-codec-1.6.jar client_lib/jackson-core-2.1.1.jar client_lib/jackson-databind-2.1.1.jar client_lib/jackson-annotations-2.1.1.jar client_lib/joda-time-2.5.jar client_lib/javaee-api-7.0.jar client_lib/javax.mail-1.5.0.jar client_lib/activation-1.1.jar"/>
+                <attribute name="Class-Path" value=". lib/aopalliance-repackaged-2.3.0-b10.jar lib/common-ext-model.jar lib/hk2-api-2.3.0-b10.jar lib/hk2-locator-2.3.0-b10.jar lib/hk2-utils-2.3.0-b10.jar lib/javassist-3.18.1-GA.jar lib/javax.annotation-api-1.2.jar lib/javax.inject-2.3.0-b10.jar lib/javax.json-1.0.jar lib/javax.ws.rs-api-2.0.1.jar lib/jersey-client-2.12.jar lib/jersey-common-2.12.jar lib/jersey-entity-filtering-2.12.jar lib/jersey-guava-2.12.jar lib/jersey-media-json-processing-2.12.jar lib/jersey-media-moxy-2.12.jar lib/jsonp-jaxrs-1.0.jar lib/org.eclipse.persistence.antlr-2.5.0.jar lib/org.eclipse.persistence.asm-2.5.0.jar lib/org.eclipse.persistence.core-2.5.0.jar lib/org.eclipse.persistence.moxy-2.5.0.jar lib/osgi-resource-locator-1.0.1.jar lib/common-ext-model-0.0.1-SNAPSHOT.jar lib/aws-java-sdk-1.8.9.1.jar lib/commons-logging-1.1.1.jar lib/httpclient-4.2.jar lib/httpcore-4.2.jar lib/commons-codec-1.6.jar lib/jackson-core-2.1.1.jar lib/jackson-databind-2.1.1.jar lib/jackson-annotations-2.1.1.jar lib/joda-time-2.5.jar lib/javaee-api-7.0.jar lib/javax.mail-1.5.0.jar lib/activation-1.1.jar"/>
             </manifest>
             <fileset dir="C:/workspace/web-client-test/target/classes"/>
         </jar>
-        <delete dir="C:/workspace/web-client-test/build/lib"/>
-        <mkdir dir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/aopalliance-repackaged-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/common-ext-model.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/hk2-api-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/hk2-locator-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/hk2-utils-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/javassist-3.18.1-GA.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/javax.annotation-api-1.2.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/javax.inject-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/javax.json-1.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/javax.ws.rs-api-2.0.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-client-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-common-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-entity-filtering-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-guava-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-media-json-processing-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jersey-media-moxy-2.12.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/jsonp-jaxrs-1.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.antlr-2.5.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.asm-2.5.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.core-2.5.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.moxy-2.5.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/workspace/web-client-test/lib/osgi-resource-locator-1.0.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/net/adamsmolnik/common-ext-model/0.0.1-SNAPSHOT/common-ext-model-0.0.1-SNAPSHOT.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/com/amazonaws/aws-java-sdk/1.8.9.1/aws-java-sdk-1.8.9.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/org/apache/httpcomponents/httpcore/4.2/httpcore-4.2.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-core/2.1.1/jackson-core-2.1.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-databind/2.1.1/jackson-databind-2.1.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-annotations/2.1.1/jackson-annotations-2.1.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/joda-time/joda-time/2.5/joda-time-2.5.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/javax/javaee-api/7.0/javaee-api-7.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar" todir="C:/workspace/web-client-test/build/lib"/>
-        <copy file="C:/maven/javax/activation/activation/1.1/activation-1.1.jar" todir="C:/workspace/web-client-test/build/lib"/>
+        <delete dir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <mkdir dir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/aopalliance-repackaged-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/common-ext-model.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/hk2-api-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/hk2-locator-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/hk2-utils-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/javassist-3.18.1-GA.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/javax.annotation-api-1.2.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/javax.inject-2.3.0-b10.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/javax.json-1.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/javax.ws.rs-api-2.0.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-client-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-common-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-entity-filtering-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-guava-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-media-json-processing-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jersey-media-moxy-2.12.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/jsonp-jaxrs-1.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.antlr-2.5.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.asm-2.5.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.core-2.5.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/org.eclipse.persistence.moxy-2.5.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/workspace/web-client-test/lib/osgi-resource-locator-1.0.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/net/adamsmolnik/common-ext-model/0.0.1-SNAPSHOT/common-ext-model-0.0.1-SNAPSHOT.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/com/amazonaws/aws-java-sdk/1.8.9.1/aws-java-sdk-1.8.9.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/org/apache/httpcomponents/httpclient/4.2/httpclient-4.2.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/org/apache/httpcomponents/httpcore/4.2/httpcore-4.2.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/commons-codec/commons-codec/1.6/commons-codec-1.6.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-core/2.1.1/jackson-core-2.1.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-databind/2.1.1/jackson-databind-2.1.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/com/fasterxml/jackson/core/jackson-annotations/2.1.1/jackson-annotations-2.1.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/joda-time/joda-time/2.5/joda-time-2.5.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/javax/javaee-api/7.0/javaee-api-7.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/com/sun/mail/javax.mail/1.5.0/javax.mail-1.5.0.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
+        <copy file="C:/maven/javax/activation/activation/1.1/activation-1.1.jar" todir="C:/workspace/web-client-test/build/dcs/lib"/>
     </target>
 </project>
