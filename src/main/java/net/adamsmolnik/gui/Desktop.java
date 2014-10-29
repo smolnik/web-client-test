@@ -235,15 +235,15 @@ public class Desktop extends JPanel {
                 client.send(Optional.of(progressEvent -> {
                     try {
                         if (progressEvent.completed) {
-                            currentTextField.setText("Completed");
+                            String text = "Completed";
+                            String tip = text;
+                            setCurrentText(text, tip, currentTextField);
                             return;
                         }
-                        String info = "Submitted " + progressEvent.submitted + ", succeeded " + progressEvent.succeeded + ", failed "
+                        String tip = "Submitted " + progressEvent.submitted + ", succeeded " + progressEvent.succeeded + ", failed "
                                 + progressEvent.failed + ", result " + progressEvent.result;
-                        SwingUtilities.invokeLater(() -> {
-                            currentTextField.setText(info.length() > 120 ? info.substring(0, 120) + "..." : info);
-                            currentTextField.setToolTipText(info);
-                        });
+                        String text = tip.length() > 120 ? tip.substring(0, 120) + "..." : tip;
+                        setCurrentText(text, tip, currentTextField);
                     } catch (Exception ex) {
                         SwingUtilities.invokeLater(() -> {
                             currentTextField.setText(ex.getLocalizedMessage());
@@ -260,6 +260,13 @@ public class Desktop extends JPanel {
 
         });
 
+    }
+
+    private void setCurrentText(String text, String tip, JTextField currentTextField) {
+        SwingUtilities.invokeLater(() -> {
+            currentTextField.setText(text);
+            currentTextField.setToolTipText(tip);
+        });
     }
 
     private static void closeQuietly(DigestNoLimitUnderHeavyLoadClient client) {
