@@ -158,10 +158,10 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
                     } catch (InterruptedException iex) {
                         // deliberately ignored
                         Thread.interrupted();
-                    } catch (Exception iex) {
-                        responseMessage.set(iex.getLocalizedMessage());
+                    } catch (Exception ex) {
+                        responseMessage.set(ex.getLocalizedMessage());
                         failed.incrementAndGet();
-                        iex.printStackTrace();
+                        ex.printStackTrace();
                     } finally {
                         progressEventConsumer.ifPresent(consumer -> consumer.accept(new ProgressEvent(seq, succeeded.get(), failed.get(),
                                 responseMessage.get())));
