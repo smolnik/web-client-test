@@ -154,7 +154,7 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
                         // deliberately ignored
                         Thread.currentThread().interrupt();
                     } catch (Exception ex) {
-                        responseMessage.set(ex.getClass() + ": " + ex.getLocalizedMessage());
+                        responseMessage.set(ex.getClass().getName() + ": " + ex.getLocalizedMessage());
                         failed.incrementAndGet();
                         ex.printStackTrace();
                     } finally {
