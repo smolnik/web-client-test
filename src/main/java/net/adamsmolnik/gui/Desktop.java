@@ -77,7 +77,6 @@ public class Desktop extends JPanel {
     private static class MyWindowAdapter extends WindowAdapter {
 
         public MyWindowAdapter(DigestNoLimitUnderHeavyLoadClient client) {
-            super();
             this.client = client;
         }
 

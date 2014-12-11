@@ -39,7 +39,7 @@
 		alert(err);
 	    }
 	    ws.onopen = function() {
-		logStatus("Connection has been opened to " + host);
+		logStatus("Connection has been opened to " + clientHost);
 		ws.send(message);
 		logStatus("Message has been sent");
 		ws.onmessage = function(evt) {

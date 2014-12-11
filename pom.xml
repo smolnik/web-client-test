@@ -8,7 +8,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.adamsmolnik</groupId>
-			<artifactId>common-ext-model</artifactId>
+			<artifactId>simple-json-digest-service-client</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

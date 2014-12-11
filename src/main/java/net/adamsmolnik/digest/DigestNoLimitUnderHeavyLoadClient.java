@@ -11,12 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
-import net.adamsmolnik.model.digest.DigestRequest;
-import net.adamsmolnik.model.digest.DigestResponse;
+import net.adamsmolnik.client.SimpleJsonDigestNoLimitClient;
 
 /**
  * @author ASmolnik
@@ -111,13 +106,13 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
 
     private final int suspensionInMs;
 
-    private final Client client = ClientBuilder.newClient();
-
     private final ExecutorService workers;
 
     private final ExecutorService launchers;
 
     private final AtomicBoolean stop = new AtomicBoolean();
+
+    private final SimpleJsonDigestNoLimitClient client;
 
     private DigestNoLimitUnderHeavyLoadClient(Builder builder) {
         host = builder.host.trim();
@@ -128,11 +123,11 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
         suspensionInMs = builder.suspensionInMs;
         workers = Executors.newFixedThreadPool(workersNumber);
         launchers = Executors.newCachedThreadPool();
+        client = new SimpleJsonDigestNoLimitClient(host);
     }
 
     public final void send(Optional<Consumer<ProgressEvent>> progressEventConsumer) {
         launchers.submit(() -> {
-            final Entity<DigestRequest> request = Entity.json(new DigestRequest(algorithm, objectKey));
             final AtomicInteger submitted = new AtomicInteger();
             final AtomicInteger succeeded = new AtomicInteger();
             final AtomicInteger failed = new AtomicInteger();
@@ -150,16 +145,16 @@ public class DigestNoLimitUnderHeavyLoadClient implements AutoCloseable {
                     final AtomicReference<String> responseMessage = new AtomicReference<>();
                     try {
                         System.out.println("before sending (seq " + seq + ")");
-                        Response response = client.target("http://" + host + "/digest-service-no-limit/ds/digest").request().post(request);
+                        String response = client.send(algorithm, objectKey, 15);
                         System.out.println("after sending (seq " + seq + ")");
-                        responseMessage.set(response.readEntity(DigestResponse.class).toString());
+                        responseMessage.set(response);
                         succeeded.incrementAndGet();
                         TimeUnit.MILLISECONDS.sleep(suspensionInMs);
                     } catch (InterruptedException iex) {
                         // deliberately ignored
-                        Thread.interrupted();
+                        Thread.currentThread().interrupt();
                     } catch (Exception ex) {
-                        responseMessage.set(ex.getLocalizedMessage());
+                        responseMessage.set(ex.getClass() + ": " + ex.getLocalizedMessage());
                         failed.incrementAndGet();
                         ex.printStackTrace();
                     } finally {
